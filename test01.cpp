@@ -13,6 +13,7 @@ class obj{
     obj(int aa, int bb, int cc){
         a=aa,b=bb,c=cc;
     }
+    // comparator inside the DS
     bool operator <(const obj& objobj) const
     {
     return b > objobj.b;
@@ -28,11 +29,13 @@ int main(){
     for(int i = 0; i <3; i++){
         cin>>a>>b>>c;
         obj* ptr = new obj(a,b,c);
+        
+        //implicit address convertion
         p.push_back(*ptr);
 
     }
 
-
+    // global comparator can also be created
     sort(p.begin(), p.end());
 
     for(obj i : p){
