@@ -57,11 +57,10 @@ int main(){
 
         temp = (qq.front());
 
-        if((*temp).bt >= process::quant){
+        if((*temp).bt > process::quant){
             (*temp).bt-=process::quant;
-            process::clk+=process::quant;
-            if((*temp).bt > 0) 
-                qq.push(temp);
+            process::clk+=process::quant;           
+            qq.push(temp);
             qq.pop();
         }
         else{
