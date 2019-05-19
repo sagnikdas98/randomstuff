@@ -34,12 +34,11 @@ int main(){
 		lil[i] = new lilmem();
 	
 	while(myfile>>page){
+		lilmem::currPri++;
 	
 		for(i=0; i<size; i++)
 			if(page == lil[i]->pageNo){
-
-        lilmem::currPri++;
-        lil[i]->priNo = lilmem::currPri;
+        			lil[i]->priNo = lilmem::currPri;
 				flag = 1;
 				break;
 				}
@@ -52,7 +51,6 @@ int main(){
 					minPriI = i;
 					}
 					
-			lilmem::currPri++;
 			lil[minPriI]->pageNo = page;
 			lil[minPriI]->priNo = lilmem::currPri;		
 			
