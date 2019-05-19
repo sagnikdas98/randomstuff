@@ -4,78 +4,75 @@
 using namespace std;
 
 class process{
-	public:
+    
+    public:
+    int pid;
+    bool fin;
+
+    vector<int> allocated;
+    vector<int> maxalloc;
+    vector<int> need;
+
+    static bool checkRequest;
+    static int resrcN;
+    static vector<int> available;
+    static vector<int> request;
 	
-	int pid;
-  bool fin;
-  
-  vector<int> allocated;
-  vector<int> maxalloc;
-  vector<int> need;
+    process(int id){
+        pid = id;
+        fin = false;
+    }	
 
-  static bool checkRequest;
-  static int resrcN;
-	static vector<int> available;
-  static vector<int> request;
-	
-	process(int id){
-		pid = id;
-    fin = false;
-		}	
-
-  void calcneed(){
-    for(int i=0; i< resrcN; i++)
-      need.push_back(maxalloc[i] - allocated[i]);
-  }
-
-  bool allocatethis(){
-    fin = true;
-    for(int i=0; i< resrcN; i++){
-      available[i] += allocated[i];
+    void calcneed(){
+        for(int i=0; i< resrcN; i++)
+        need.push_back(maxalloc[i] - allocated[i]);
     }
-    cout<<pid<<endl;
-    return true;
-  }
+
+    bool allocatethis(){
+        fin = true;
+        for(int i=0; i< resrcN; i++)
+            available[i] += allocated[i];
+        cout<<pid<<endl;
+        return true;
+    }
  
-  bool trythis(){
-    if(!fin){
+    bool trythis(){
+        if(!fin){
 
-      for(int i=0; i< resrcN; i++){
-        if(available[i] < need[i])
+            for(int i=0; i< resrcN; i++)
+                if(available[i] < need[i])
+                    return false;
+            return allocatethis();
+        }
         return false;
-      }
-      return allocatethis();
-    }
-    return false;
-  }
-
-  void checkreq(){
-
-    checkRequest=true;
-    for(int i=0; i< resrcN; i++)
-      if(request[i]>need[i]){
-        checkRequest = false;
-        cout<<"Request Not Possible"<<endl;
-        break;
     }
 
-  }
+    void checkreq(){
 
-  void tryrequest(){ 
-
-    if(checkRequest){
-      for(int i=0; i< resrcN; i++)
-        if(request[i]>available[i])
-          return;
-      for(int i=0; i< resrcN; i++){ 
-        available[i]-=request[i];
-        allocated[i] += request[i]; 
-        need[i] -= request[i];
-      }
-      checkRequest = false;
-      cout<<"Request Satisfied"<<endl;
+        checkRequest=true;
+        for(int i=0; i< resrcN; i++)
+            if(request[i]>need[i]){
+                checkRequest = false;
+                cout<<"Request Not Possible"<<endl;
+                break;
+            }
     }
-  }
+
+    void tryrequest(){ 
+
+        if(checkRequest){
+            for(int i=0; i< resrcN; i++)
+                if(request[i]>available[i])
+                    return;
+            for(int i=0; i< resrcN; i++){ 
+                available[i]-=request[i];
+                allocated[i] += request[i]; 
+                need[i] -= request[i];
+            }
+            checkRequest = false;
+            cout<<"Request Satisfied"<<endl;
+        }
+    }
 
 };
 
@@ -93,58 +90,58 @@ process *temp = NULL;
 
 int main(){
 
-	int n,m,ele;
+    int n,m,ele;
 
-	fstream myfile("inpu.txt",ios_base::in);
-	myfile>>n>>m;
+    fstream myfile("inpu.txt",ios_base::in);
+    myfile>>n>>m;
 
-  process::resrcN = m;
+    process::resrcN = m;
 
-  for(int i = 0; i< n; i++){
-    pp.push_back(new process(i+1));
+    for(int i = 0; i< n; i++){
+        pp.push_back(new process(i+1));
+        for(int j=0; j<m; j++){
+            myfile>>ele;
+            pp[i]->allocated.push_back(ele);
+        }
+    }
+
+    for(int i = 0; i<n; i++){
+        for(int j=0; j<m; j++){
+            myfile>>ele;
+            pp[i]->maxalloc.push_back(ele);
+        }
+        pp[i]->calcneed();
+    }
+
     for(int j=0; j<m; j++){
-      myfile>>ele;
-      pp[i]->allocated.push_back(ele);
-    }
+        myfile>>ele;
+        process::available.push_back(ele);
     }
 
-  for(int i = 0; i<n; i++){
+
+    myfile>>ele;
+    if(ele>0);
+        temp = pp[ele-1];
+
     for(int j=0; j<m; j++){
-      myfile>>ele;
-      pp[i]->maxalloc.push_back(ele);
-    }
-    pp[i]->calcneed();
+        myfile>>ele;
+        process::request.push_back(ele);
     }
 
-  for(int j=0; j<m; j++){
-      myfile>>ele;
-      process::available.push_back(ele);
+    temp->checkreq();
+
+    for(int i =0;i<n;i++){
+
+        temp->tryrequest();
+        for(vector<process*>::iterator p = pp.begin(); p != pp.end(); p++ ){
+
+            if((*p)->trythis()){
+                pp.erase(p);
+                break;
+            }
+        }
     }
-
-
-  myfile>>ele;
-  if(ele>0);
-  temp = pp[ele-1];
-
-  for(int j=0; j<m; j++){
-      myfile>>ele;
-      process::request.push_back(ele);
-    }
-
-  temp->checkreq();
-
-  for(int i =0;i<n;i++){
-
-  temp->tryrequest();
-  for(vector<process*>::iterator p = pp.begin(); p != pp.end(); p++ ){
-
-    if((*p)->trythis()){
-      pp.erase(p);
-      break;
-      }
-  }
-  }
-  if(pp.empty())
-    cout<<"Valid Sequence";
-  else cout<<"invalid";
+    if(pp.empty())
+        cout<<"Valid Sequence";
+    else cout<<"invalid";
 }
