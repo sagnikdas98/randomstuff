@@ -39,7 +39,7 @@ void display()
         for(int  j =0; j <= 1; j++)
             ctrlPts[i][j] += 5*sin(theta);
 
-    theta += 0.0002;
+    theta += 0.0002; //change this for speed
     glPointSize(2);
 
     bezier(ctrlPts); //start 
