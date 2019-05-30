@@ -9,7 +9,7 @@ float theta, bezBlendFcn;
 
 void bezier(int ctrlPts[][2])
 {
-    glBegin(GL_POINTS);
+    glBegin(GL_LINES);
     
     for (int k = 0; k <= nBezCurvePts; k++)
     {
@@ -22,8 +22,8 @@ void bezier(int ctrlPts[][2])
             for(int  j =0; j <= 1; j++)
                 bezPt[j] += ctrlPts[k][j] * bezBlendFcn;
         }
-        for (int i = 0; i < 40; i++) // plot the same point one below the other
-            glVertex2f(bezPt[0],bezPt[1]-(0.5*i));
+        glVertex2fv(bezPt); 
+        glVertex2f(bezPt[0],bezPt[1]-20);// plot the same point one below the other
     }
     glEnd();
 }
