@@ -33,7 +33,7 @@ void display()
     glClearColor(1, 1, 1, 1);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    int ctrlPts[][2] = {{20,100}, {30,120},{50,80},{60,100}};  
+    int ctrlPts[][2] = {{20,100}, {30,120},{50,80},{60,100}}; // Don't make global 
 
     for(int  i =1; i < nCtrlPts; i++) //move control points for animation
         for(int  j =0; j <= 1; j++)
