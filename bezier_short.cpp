@@ -23,7 +23,7 @@ void bezier(int ctrlPts[][2])
                 bezPt[j] += ctrlPts[k][j] * bezBlendFcn;
         }
         glVertex2fv(bezPt); 
-        glVertex2f(bezPt[0],bezPt[1]-20);// plot the same point one below the other
+        glVertex2f(bezPt[0],bezPt[1]-20);// plot the same point below to draw line
     }
     glEnd();
 }
