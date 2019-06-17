@@ -62,9 +62,9 @@ void menu(int op)
     glutPostRedisplay();
 }
 
-int main(int argc, char *argv[]){
-
-	glutInit(&argc, argv);
+int main(int argc, char *argv[])
+{
+    glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB | GLUT_SINGLE);
     glutInitWindowSize(600, 600);
     glutCreateWindow("BEZIER CURVE");
