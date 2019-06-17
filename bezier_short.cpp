@@ -19,10 +19,10 @@ void bezier(int ctrlPts[][2])
         for (int k = 0; k < nCtrlPts; k++) //find bezier point
         {   
             bezBlendFcn = bicoeff[k] * pow(t, k) * pow(1 - t, (nCtrlPts -1) - k);
-            for(int  j =0; j <= 1; j++)
-                bezPt[j] += ctrlPts[k][j] * bezBlendFcn;
+            bezPt[0] += ctrlPts[k][0] * bezBlendFcn;
+            bezPt[1] += ctrlPts[k][1] * bezBlendFcn;
         }
-        glVertex2fv(bezPt); 
+        glVertex2f(bezPt[0],bezPt[1]);
         glVertex2f(bezPt[0],bezPt[1]-20);// plot the same point below to draw line
     }
     glEnd();
